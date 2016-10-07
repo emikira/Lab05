@@ -71,8 +71,53 @@ public class ProyectoDAO {
         return cursor;
     }
 
-    public void nuevaTarea(Tarea t){
+    public Cursor obtenerProyecto (Integer proyectoId){
+        Cursor cursorPry = null;
+        cursorPry = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaProyectoMetadata._ID+ " FROM "+ProyectoDBMetadata.TABLA_PROYECTO + "WHERE " + ProyectoDBMetadata.TablaProyectoMetadata._ID + " = ?",new String[]{proyectoId.toString()});
 
+        if(cursorPry.moveToFirst()){
+            return cursorPry;
+        }
+
+        return cursorPry;
+    }
+
+    public Integer nuevaTarea(Tarea t){
+/*
+        //Obtener el proyecto
+        Cursor cursorPry = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaProyectoMetadata._ID+ " FROM "+ProyectoDBMetadata.TABLA_PROYECTO,null);
+        Integer idPry= 0;
+        if(cursorPry.moveToFirst()){
+            idPry=cursorPry.getInt(0);
+        }
+
+        //Obtener el usuario
+        Integer idUser = 0;
+        Cursor cursorUser = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaUsuariosMetadata._ID + " FROM " + ProyectoDBMetadata.TABLA_USUARIOS + "WHERE " + ProyectoDBMetadata.TABLA_USUARIOS.USUARIO " = ?", t.responsable);
+        if(cursorUser.moveToFirst()){
+            idUser=cursorUser.getInt(0);
+        }
+
+        String insertarTarea = "INSERT INTO" + ProyectoDBMetadata.TABLA_TAREAS +
+        (descripcion, horasEstimadas, minutosTrabajados, finalizada, proyecto, prioridad, responsable) +
+                "VALUES (" + t.descripcion + ", " + t.horasEstimadas + ", " + t.minutosTrabajados + ", " + t.finalizada + ", " + idProyecto + ", " + t.prioridad + ", " + idUser + ")";
+
+        Cursor cursorPry = db.rawQuery(insertarTarea,null);
+        Integer insertedRowId = 0;
+
+        insertedRowId = obtenerUltimoId();
+
+        return insertedRowId;*/
+        return 0;
+    }
+
+    public int obtenerUltimoId() {
+        final String MY_QUERY = "SELECT last_insert_rowid()";
+        Cursor cur = db.rawQuery(MY_QUERY, null);
+        cur.moveToFirst();
+        int ID = cur.getInt(0);
+        cur.close();
+        return ID;
     }
 
     public void actualizarTarea(Tarea t){
