@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.List;
 
 import dam.isi.frsf.utn.edu.ar.lab05.modelo.Prioridad;
@@ -83,7 +84,7 @@ public class ProyectoDAO {
     }
 
     public Integer nuevaTarea(Tarea t){
-/*
+
         //Obtener el proyecto
         Cursor cursorPry = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaProyectoMetadata._ID+ " FROM "+ProyectoDBMetadata.TABLA_PROYECTO,null);
         Integer idPry= 0;
@@ -93,22 +94,23 @@ public class ProyectoDAO {
 
         //Obtener el usuario
         Integer idUser = 0;
-        Cursor cursorUser = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaUsuariosMetadata._ID + " FROM " + ProyectoDBMetadata.TABLA_USUARIOS + "WHERE " + ProyectoDBMetadata.TABLA_USUARIOS.USUARIO " = ?", t.responsable);
+        Cursor cursorUser = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaUsuariosMetadata._ID +
+                " FROM " + ProyectoDBMetadata.TABLA_USUARIOS +
+                "WHERE " + ProyectoDBMetadata.TABLA_USUARIOS +" = ?", new String[]{t.getResponsable().getId().toString()});
         if(cursorUser.moveToFirst()){
             idUser=cursorUser.getInt(0);
         }
 
         String insertarTarea = "INSERT INTO" + ProyectoDBMetadata.TABLA_TAREAS +
-        (descripcion, horasEstimadas, minutosTrabajados, finalizada, proyecto, prioridad, responsable) +
-                "VALUES (" + t.descripcion + ", " + t.horasEstimadas + ", " + t.minutosTrabajados + ", " + t.finalizada + ", " + idProyecto + ", " + t.prioridad + ", " + idUser + ")";
+        "(descripcion, horasEstimadas, minutosTrabajados, finalizada, proyecto, prioridad, responsable)" +
+                "VALUES (" + t.getDescripcion() + ", " + t.getHorasEstimadas() + ", " + t.getMinutosTrabajados() + ", " + t.getFinalizada() + ", " + t.getProyecto().getId() + ", " + t.getPrioridad().getPrioridad() + ", " + idUser + ")";
 
-        Cursor cursorPry = db.rawQuery(insertarTarea,null);
+        cursorPry = db.rawQuery(insertarTarea,null);
         Integer insertedRowId = 0;
 
         insertedRowId = obtenerUltimoId();
 
-        return insertedRowId;*/
-        return 0;
+        return insertedRowId;
     }
 
     public int obtenerUltimoId() {
@@ -118,6 +120,20 @@ public class ProyectoDAO {
         int ID = cur.getInt(0);
         cur.close();
         return ID;
+    }
+    public Tarea obtenerTarea(int id){
+        Tarea nueva = new Tarea();
+        Cursor cursorTarea = null;
+        cursorTarea = db.rawQuery("SELECT "+ProyectoDBMetadata.TablaTareasMetadata._ID+ " FROM "+ProyectoDBMetadata.TABLA_TAREAS + "WHERE " + ProyectoDBMetadata.TablaTareasMetadata._ID+ " = ?",new String[]{String.valueOf(id)});
+
+        if(cursorTarea.moveToFirst()){
+            nueva.setDescripcion(cursorTarea.getString(cursorTarea.getColumnIndex("DESCRIPCION")));
+            nueva.setHorasEstimadas(cursorTarea.getInt(cursorTarea.getColumnIndex("HORAS_PLANIFICADAS")));
+            nueva.setPrioridad(cursorTarea.getInt(cursorTarea.getColumnIndex("ID_PRIORIDAD")));
+
+
+
+        }
     }
 
     public void actualizarTarea(Tarea t){

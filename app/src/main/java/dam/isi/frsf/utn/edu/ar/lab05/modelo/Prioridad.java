@@ -12,8 +12,7 @@ public class Prioridad {
 
     }
 
-    public Prioridad(Integer id, String prioridad) {
-        this.id = id;
+    public Prioridad(String prioridad) {
         this.prioridad = prioridad;
     }
 

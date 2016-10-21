@@ -12,8 +12,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import dam.isi.frsf.utn.edu.ar.lab05.dao.ProyectoDAO;
+import dam.isi.frsf.utn.edu.ar.lab05.modelo.Prioridad;
 import dam.isi.frsf.utn.edu.ar.lab05.modelo.Proyecto;
 import dam.isi.frsf.utn.edu.ar.lab05.modelo.Tarea;
+import dam.isi.frsf.utn.edu.ar.lab05.modelo.Usuario;
 
 public class AltaTareaActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +31,18 @@ public class AltaTareaActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_tarea);
 
+        EditText editTextDescripcion = (EditText) findViewById(R.id.editTextDespcripcion);
+        EditText editTextHoras  = (EditText) findViewById(R.id.editTextHorasEstimadas);
+        SeekBar seekBarPrioridad = (SeekBar) findViewById(R.id.seekBarPrioridad);
+        Spinner spinnerResponsable = (Spinner) findViewById(R.id.spinnerResponsable);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle.getInt("ID_TAREA")!=0){
+            int idTarea = bundle.getInt("ID_TAREA");
+
+
+        }
+
         Button botonGuardar = (Button) findViewById(R.id.btnGuardar);
         Button botonCancelar = (Button) findViewById(R.id.btnCanelar);
 
@@ -43,22 +57,22 @@ public class AltaTareaActivity extends AppCompatActivity implements View.OnClick
             case R.id.btnGuardar:
 
                 Cursor cursor = proyectoDAO.obtenerProyecto(1);
-                //Ver como obtener el proyecto
-/*
+
                 Tarea tarea = new Tarea(
+//String descripcion, Integer horasEstimadas, Integer minutosTrabajados, Boolean finalizada, Proyecto proyecto, Prioridad prioridad, Usuario responsable
                         descripcionTarea.getText().toString(),
                         Integer.getInteger(horasEstimadas.getText().toString()),
                         0,
                         false,
-                        ,
-                        new Proyecto(),
-                        prioridad.getProgress(), // tiene que ser tipo prioridad
-                        responsable.getSelectedItem()
+                        new Proyecto(), //Ver como obtener el proyecto
+                        new Prioridad(String.valueOf(prioridad.getProgress())), // tiene que ser tipo prioridad
+                        new Usuario()
                 );
 
                 proyectoDAO.nuevaTarea(tarea);
-*/
+
                 Toast.makeText(this,"La tarea fue guardada exitosamente",Toast.LENGTH_SHORT).show();
+
 
                 break;
             case R.id.btnCanelar:
